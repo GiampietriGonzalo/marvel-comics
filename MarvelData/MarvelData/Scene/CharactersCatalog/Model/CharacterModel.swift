@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-final class CharacterModel: ObservableObject, Identifiable {
+final class CharacterModel: ObservableObject {
+    
     let id: Int
     let name, description: String
     let thumbnail: String
@@ -19,5 +20,15 @@ final class CharacterModel: ObservableObject, Identifiable {
         self.description = dto.description
         self.thumbnail = dto.thumbnail.path + "." + dto.thumbnail.thumbnailExtension
         self.comics = ComicModel(from: dto.comics)
+    }
+    
+    static func == (lhs: CharacterModel, rhs: CharacterModel) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension CharacterModel: Hashable, Identifiable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
     }
 }
