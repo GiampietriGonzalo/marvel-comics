@@ -11,33 +11,10 @@ struct CharacterPreviewView: View {
     @StateObject var character: CharacterModel
     
     var body: some View {
-        VStack {
-            AsyncImage(url: URL(string: character.thumbnail)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode:  .fit)
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(minHeight: 200)
-            
-            HStack {
-                Text(character.name)
-                    .font(.title)
-                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
-                
-                Spacer()
-            }
-            
-            HStack {
-                Text(character.description)
-                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 0))
-                Spacer()
-            }
-        }
-        .background(.thinMaterial)
-        .mask(RoundedRectangle(cornerRadius: 16))
-        .padding(.bottom, 8)
+        CharacterInformationView(character: character)
+            .background(.thinMaterial)
+            .mask(RoundedRectangle(cornerRadius: 16))
+            .padding(.bottom, 8)
     }
 }
 

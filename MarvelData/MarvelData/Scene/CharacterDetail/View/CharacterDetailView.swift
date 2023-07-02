@@ -12,8 +12,7 @@ struct CharacterDetailView: View {
     
     var body: some View {
         VStack {
-            Text("Hello, World!")
-                
+            CharacterInformationView(character: character)
         }
         .navigationTitle(character.name)
     }
