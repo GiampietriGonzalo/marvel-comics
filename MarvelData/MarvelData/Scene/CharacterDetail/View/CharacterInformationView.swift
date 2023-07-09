@@ -8,24 +8,21 @@
 import SwiftUI
 
 struct CharacterInformationView: View {
-    @StateObject var character: CharacterModel
+    @ObservedObject private(set) var character: CharacterModel
+    @ObservedObject private(set) var viewModel: CharactersCatalogViewModel
+    @State var image: Image?
     
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: character.thumbnail)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode:  .fit)
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(minHeight: 200)
+            image?
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(minHeight: 200)
             
             HStack {
                 Text(character.name)
                     .font(.title)
-                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
-                
+                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                 Spacer()
             }
             
@@ -35,9 +32,16 @@ struct CharacterInformationView: View {
                 Spacer()
             }
         }
+        .task {
+            do {
+                self.image = try await viewModel.getImage(for: character)
+            } catch {
+                
+            }
+        }
     }
 }
 
 #Preview {
-    CharacterInformationView(character: mockCharacter)
+    CharacterInformationView(character: mockCharacter, viewModel: CharactersCatalogViewModel())
 }

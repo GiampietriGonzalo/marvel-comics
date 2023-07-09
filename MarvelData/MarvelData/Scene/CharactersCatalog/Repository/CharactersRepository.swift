@@ -24,9 +24,21 @@ final class CharactersRepository {
         return result
     }
     
+    func downloadImage(url: String) async throws -> Data {
+        guard let url = URL(string: url) else { throw  NetworkError.invalidURL }
+        var result: Data
+        do {
+            (result, _) = try await URLSession.shared.data(from: url)
+        } catch {
+            throw NetworkError.networkError
+        }
+        
+        return result
+    }
+    
     private func buildUrl() -> URL? {
         let constants = CharactersRepositoryConstants()
-        let urlString = "\(constants.endpoint)?limit=100&offset=100&apikey=\(constants.key)&hash=\(constants.hash)&ts=\(constants.ts)"
+        let urlString = "\(constants.endpoint)?limit=100&offset=300&apikey=\(constants.key)&hash=\(constants.hash)&ts=\(constants.ts)"
         return URL(string: urlString)
     }
 }
