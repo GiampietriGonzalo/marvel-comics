@@ -21,7 +21,7 @@ struct ContentView: View {
                         })
                     } else {
                         List {
-                            ForEach(viewModel.characters.shuffled()) { character in
+                            ForEach(viewModel.characters) { character in
                                 CharacterPreviewView(character: character, viewModel: viewModel)
                                     .frame(minWidth: .zero, minHeight: 200)
                                     .listRowSeparator(.hidden)
@@ -34,7 +34,11 @@ struct ContentView: View {
                         .listStyle(.plain)
                         .scrollIndicators(.hidden)
                         .refreshable {
-                            await viewModel.loadCatalog()
+                            do {
+                                try await viewModel.loadCatalog()
+                            } catch {
+                                
+                            }
                         }
                     }
                 }
@@ -42,7 +46,11 @@ struct ContentView: View {
             }
         }
         .task {
-            await viewModel.loadCatalog()
+            do {
+                try await viewModel.loadCatalog()
+            } catch {
+                
+            }
         }
     }
     
